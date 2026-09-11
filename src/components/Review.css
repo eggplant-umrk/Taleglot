@@ -2,17 +2,18 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.25rem;
-  font-size: 1.15rem;
+  gap: var(--space-5);
+  font-family: var(--font-body-jp);
+  font-size: var(--text-body);
   color: var(--color-text);
-  padding-top: 1.5rem;
+  padding-top: var(--space-6);
   border-top: 2px solid var(--color-border);
 }
 
 .review__count {
   color: var(--color-muted);
   margin: 0;
-  font-size: 0.95rem;
+  font-size: var(--text-sm);
 }
 
 .review__card {
@@ -20,7 +21,7 @@
   max-width: 360px;
   aspect-ratio: 4 / 3;
   border: 1px solid var(--color-border);
-  border-radius: 18px;
+  border-radius: 3px;
   background: var(--color-surface-alt);
   padding: 0;
   cursor: pointer;
@@ -28,22 +29,28 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  box-shadow: var(--shadow-card);
+  box-shadow: var(--shadow-book-edge);
   transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .review__card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 14px 28px rgba(74, 56, 38, 0.2);
 }
 
 .review__card--flipped {
-  background: var(--color-surface);
+  background-color: var(--color-surface-raised);
+  background-image: repeating-linear-gradient(
+    180deg,
+    rgba(107, 66, 38, 0.05) 0px,
+    rgba(107, 66, 38, 0.05) 2px,
+    transparent 2px,
+    transparent 7px
+  );
   border-color: var(--color-accent);
 }
 
 .review__card:focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-brass);
   outline-offset: 2px;
 }
 
@@ -55,48 +62,53 @@
 
 .review__image-placeholder {
   color: var(--color-muted);
+  font-size: var(--text-sm);
 }
 
 .review__back {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.6rem;
-  padding: 1.5rem;
+  gap: var(--space-2);
+  padding: var(--space-6);
   text-align: center;
 }
 
 .review__word {
-  font-size: 1.7rem;
-  font-weight: bold;
+  font-family: var(--font-heading-thai);
+  font-size: var(--text-lg);
+  font-weight: 400;
   margin: 0;
   color: var(--color-text-thai);
 }
 
 .review__reading {
   color: var(--color-muted);
+  font-size: var(--text-xs);
   margin: 0;
 }
 
 .review__meaning {
+  font-family: var(--font-body-jp);
   margin: 0;
-  font-size: 1.25rem;
+  font-size: var(--text-body);
   color: var(--color-text);
 }
 
 .review__audio {
   display: flex;
   justify-content: center;
-  margin-top: 0.25rem;
+  margin-top: var(--space-1);
 }
 
 .review__audio-button {
-  font-size: 0.95rem;
-  padding: 0.4rem 0.9rem;
-  border-radius: 999px;
+  font-family: var(--font-body-jp);
+  font-size: var(--text-sm);
+  padding: var(--space-2) var(--space-4);
+  border-radius: 3px 14px 3px 14px;
   border: none;
   background: var(--color-accent);
-  color: #fff;
+  color: var(--color-surface-raised);
   cursor: pointer;
   transition: background-color 0.15s ease, transform 0.15s ease;
 }
@@ -118,14 +130,15 @@
 }
 
 .review__next {
-  font-size: 1.1rem;
-  padding: 0.7rem 1.6rem;
-  border-radius: 999px;
+  font-family: var(--font-body-jp);
+  font-size: var(--text-body);
+  padding: var(--space-3) var(--space-6);
   border: none;
+  border-radius: 4px 28px 4px 28px;
   background: var(--color-accent);
-  color: #fff;
+  color: var(--color-surface-raised);
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(224, 138, 60, 0.35);
+  box-shadow: 0 4px 10px rgba(107, 66, 38, 0.35);
   transition: background-color 0.15s ease, transform 0.15s ease;
 }
 
@@ -134,17 +147,24 @@
   transform: translateY(-1px);
 }
 
+.review__next:focus-visible {
+  outline: 2px solid var(--color-brass);
+  outline-offset: 2px;
+}
+
 .review__done {
   text-align: center;
-  font-size: 1.4rem;
+  font-family: var(--font-heading-jp);
+  font-size: var(--text-lg);
   color: var(--color-accent-dark);
-  padding: 2rem 0;
+  padding: var(--space-8) 0;
 }
 
 /* PC向けレイアウト：カードとフォントをPCの余白に合わせて拡大する */
 @media (min-width: 768px) {
   .review {
-    gap: 1.75rem;
+    gap: var(--space-6);
+    font-size: var(--text-body-lg);
   }
 
   .review__card {
@@ -152,10 +172,10 @@
   }
 
   .review__word {
-    font-size: 2.1rem;
+    font-size: var(--text-2xl);
   }
 
   .review__meaning {
-    font-size: 1.4rem;
+    font-size: var(--text-body-lg);
   }
 }

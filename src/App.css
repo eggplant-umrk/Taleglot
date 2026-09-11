@@ -5,65 +5,128 @@
 }
 
 :root {
-  --color-bg: #f6ecd9;
-  --color-surface: #fffdf6;
-  --color-surface-alt: #fbf1de;
-  --color-text: #4a3826;
-  --color-text-thai: #2f6b63;
-  --color-muted: #9c8b72;
-  --color-accent: #e08a3c;
-  --color-accent-dark: #c06f2a;
-  --color-secondary: #5b8266;
-  --color-secondary-dark: #45684f;
-  --color-border: #e8d7b8;
-  --color-highlight: #fce29b;
-  --shadow-soft: 0 6px 16px rgba(74, 56, 38, 0.18);
-  --shadow-card: 0 10px 24px rgba(74, 56, 38, 0.15);
+  /* 背景・面 */
+  --color-bg: #e8dcc0;
+  --color-surface: #f3e9d2;
+  --color-surface-alt: #ecdfc0;
+  --color-surface-raised: #f8f1de;
+
+  /* テキスト */
+  --color-text: #3e2723;
+  --color-text-thai: #86633c;
+  --color-muted: #8a7358;
+
+  /* アクセント */
+  --color-accent: #6b4226;
+  --color-accent-dark: #4e2f1a;
+  --color-lacquer: #8c2f1b;
+  --color-brass: #a87c3f;
+
+  /* 副アクセント */
+  --color-secondary: #4b5d3f;
+  --color-secondary-dark: #37452e;
+
+  /* 罫線・ハイライト */
+  --color-border: #bfae8a;
+  --color-highlight: #e8c77a;
+
+  /* 機能色 */
+  --color-error: #8c2f1b;
+
+  /* フォント */
+  --font-heading-jp: 'Klee One', serif;
+  --font-heading-thai: 'Chonburi', cursive;
+  --font-body-jp: 'Kiwi Maru', sans-serif;
+  --font-body-thai: 'Mitr', sans-serif;
+
+  /* フォントサイズ */
+  --text-xs: 0.8rem;
+  --text-sm: 0.9rem;
+  --text-base: 1rem;
+  --text-body: 1.15rem;
+  --text-body-lg: 1.25rem;
+  --text-lg: 1.4rem;
+  --text-xl: 1.9rem;
+  --text-2xl: 2.2rem;
+
+  /* スペーシング */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* 影 */
+  --shadow-soft: 0 8px 20px rgba(62, 39, 35, 0.25);
+  --shadow-card: 0 12px 28px rgba(62, 39, 35, 0.22);
+  --shadow-book-edge: 0 2px 0 #ecdfc0, 0 4px 0 #dfd0ab, 0 6px 0 #d3c298, 0 9px 16px rgba(62, 39, 35, 0.35);
 }
 
 body {
   background: var(--color-bg);
+  font-family: var(--font-body-jp);
+  color: var(--color-text);
 }
 
 .app {
+  position: relative;
   max-width: 640px;
-  margin: 2rem auto;
-  padding: 2rem;
+  margin: var(--space-8) auto;
+  padding: var(--space-8) var(--space-6);
   background: var(--color-surface);
-  border-radius: 24px;
-  box-shadow: var(--shadow-soft);
+  border-radius: 6px;
+  box-shadow: var(--shadow-book-edge);
   color: var(--color-text);
 }
 
 .app__header {
   text-align: center;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-4);
   border-bottom: 2px solid var(--color-border);
 }
 
 .app__header h1 {
   margin: 0;
+  font-family: var(--font-heading-jp);
+  font-weight: 600;
   color: var(--color-accent-dark);
-  font-size: 1.9rem;
+  font-size: var(--text-xl);
   letter-spacing: 0.02em;
+}
+
+.app__header h1::after {
+  content: '';
+  display: block;
+  width: 56%;
+  height: 10px;
+  margin: var(--space-2) auto 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 16'%3E%3Cpath d='M2 9 C 20 2, 35 14, 55 7 S 90 2, 110 9 S 145 15, 165 6 S 190 3, 198 8' fill='none' stroke='%236B4226' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
 
 .app main {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: var(--space-8);
 }
 
 /* PC向けレイアウト（将来のスマホ対応時はこの下に別のmax-widthのメディアクエリを追加する想定） */
 @media (min-width: 768px) {
   .app {
     max-width: 1080px;
-    margin: 3rem auto;
-    padding: 3rem 3.5rem;
+    margin: var(--space-12) auto;
+    padding: var(--space-12) var(--space-16);
   }
 
   .app__header h1 {
-    font-size: 2.2rem;
+    font-size: var(--text-2xl);
   }
 }
