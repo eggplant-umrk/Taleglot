@@ -16,9 +16,6 @@ function App() {
 
   return (
     <div className="app">
-      <header className="app__header">
-        <h1>タイ語えほん</h1>
-      </header>
       <main>
         {view === 'story' ? (
           <StoryViewer story={story01} onFinish={() => setView('review')} />
