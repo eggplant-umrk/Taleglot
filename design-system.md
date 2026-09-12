@@ -218,20 +218,24 @@ PC版レイアウトでは `.story-viewer__nav` 内ではなく右端に `positi
 
 ### 6-3. 木目調グラデーション(単語詳細カードの枠)
 
-`repeating-linear-gradient` で縦ストライプの濃淡を作り、`background-image` として低いopacityで重ねる(画像アセット不要)。
+`repeating-linear-gradient` で縦ストライプの濃淡を作り、`background-image` として重ねる(画像アセット不要)。単語詳細カード(`.story-viewer__card`)とフラッシュカード裏面(`.review__card--flipped`)に適用。テキストが乗る通常の`.story-viewer__text-block`には適用しない(可読性を優先)。
 
 ```css
 .story-viewer__card {
   background-color: var(--color-surface-raised);
   background-image: repeating-linear-gradient(
     180deg,
-    rgba(107, 66, 38, 0.05) 0px,
-    rgba(107, 66, 38, 0.05) 2px,
-    transparent 2px,
-    transparent 7px
+    rgba(107, 66, 38, 0.22) 0px,
+    rgba(107, 66, 38, 0.22) 3px,
+    rgba(107, 66, 38, 0.08) 3px,
+    rgba(107, 66, 38, 0.08) 6px,
+    transparent 6px,
+    transparent 15px
   );
 }
 ```
+
+濃い帯(22%)・中間帯(8%)・透明部分の3層構成にすることで、均等すぎない年輪のような不規則さを出している(初期案は5%・2px幅のみで薄すぎたため強化)。
 
 ### 方針まとめ
 
@@ -243,6 +247,17 @@ PC版レイアウトでは `.story-viewer__nav` 内ではなく右端に `positi
 | ページ送り矢印アイコン(必要な場合) | data URI SVG | 直線的な矢印ではなく手描き風カーブにするため |
 
 すべて画像アセットファイルを追加せず、CSS内(data URIまたはグラデーション関数)で完結させる。`public/` 以下に新規ファイルは追加しない。
+
+---
+
+## 7. レイアウト方針(追記: 画像を主役にする)
+
+初期実装ではPC版(768px以上)のみ画像とテキストを左右2カラムのgridで配置していたが、将来的に画像内の要素(挿絵の中の人物・動物など)もタップ可能にし、画像を探索する体験を中心にする方針としたため、以下に変更した。
+
+- 画面幅を問わず「画像→トグル→本文→ナビ」の**縦積みで統一**(2カラムgridは廃止)
+- 画像(`.story-viewer__image`)は`.story-viewer`のコンテンツ幅いっぱい(`.app`の余白を除いた幅)を使用
+- 本文(`.story-viewer__text`)とナビ(`.story-viewer__nav`)は`max-width: 640px; margin: 0 auto;`で中央寄せして幅を絞り、画像より明確に狭くすることで画像を相対的に大きく見せる
+- 画像のアスペクト比は`4:3`を維持(幅が約2倍近くになるため、これだけで十分に大きく見える)
 
 ---
 

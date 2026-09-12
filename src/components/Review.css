@@ -41,10 +41,12 @@
   background-color: var(--color-surface-raised);
   background-image: repeating-linear-gradient(
     180deg,
-    rgba(107, 66, 38, 0.05) 0px,
-    rgba(107, 66, 38, 0.05) 2px,
-    transparent 2px,
-    transparent 7px
+    rgba(107, 66, 38, 0.22) 0px,
+    rgba(107, 66, 38, 0.22) 3px,
+    rgba(107, 66, 38, 0.08) 3px,
+    rgba(107, 66, 38, 0.08) 6px,
+    transparent 6px,
+    transparent 15px
   );
   border-color: var(--color-accent);
 }
