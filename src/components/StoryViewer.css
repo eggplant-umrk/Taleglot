@@ -11,7 +11,7 @@
 .story-viewer__image {
   width: 100%;
   aspect-ratio: 16 / 9;
-  max-height: 380px;
+  max-height: 450px;
   background: var(--color-surface-alt);
   border: 1px solid var(--color-border);
   border-radius: 4px;
@@ -42,24 +42,33 @@
 .story-viewer__toggle {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-1);
+  gap: var(--space-2);
   font-family: var(--font-body-jp);
   font-size: var(--text-sm);
-  padding: var(--space-2) var(--space-5) var(--space-2);
-  border-radius: 4px 4px 0 0;
+  padding: var(--space-2) var(--space-4);
+  border-radius: 3px 14px 3px 14px;
   border: 2px solid var(--color-secondary);
-  border-bottom: none;
   background: var(--color-secondary);
   color: var(--color-surface-raised);
   cursor: pointer;
-  box-shadow: 0 3px 0 var(--color-secondary-dark);
-  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.15s ease,
-    box-shadow 0.15s ease;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
 }
 
 .story-viewer__toggle-icon {
-  font-size: 1.1rem;
-  line-height: 1;
+  flex-shrink: 0;
+}
+
+.story-viewer__toggle-icon path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+
+.story-viewer__toggle-icon circle {
+  fill: currentColor;
+  stroke: none;
+  transition: fill 0.15s ease, stroke 0.15s ease;
 }
 
 .story-viewer__toggle-label {
@@ -76,7 +85,12 @@
   background: var(--color-surface-alt);
   border-color: var(--color-border);
   color: var(--color-muted);
-  box-shadow: 0 3px 0 var(--color-border);
+}
+
+.story-viewer__toggle[aria-pressed='false'] .story-viewer__toggle-icon circle {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
 }
 
 .story-viewer__toggle[aria-pressed='false']:hover {
@@ -88,7 +102,6 @@
 
 .story-viewer__toggle:active {
   transform: translateY(1px);
-  box-shadow: none;
 }
 
 .story-viewer__toggle:focus-visible {
@@ -109,6 +122,18 @@
   padding: var(--space-4) var(--space-5);
   border-radius: 0 4px 4px 0;
   background: var(--color-surface-alt);
+}
+
+.story-viewer__text-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.story-viewer__text-content {
+  flex: 1;
+  min-width: 0;
 }
 
 .story-viewer__text-block--ja {
@@ -177,7 +202,7 @@
 .story-viewer__audio {
   display: flex;
   align-items: center;
-  margin-top: var(--space-3);
+  flex-shrink: 0;
 }
 
 .story-viewer__audio-button {

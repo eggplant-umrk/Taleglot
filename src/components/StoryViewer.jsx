@@ -4,6 +4,21 @@ import './StoryViewer.css'
 
 const ANNOTATION_MARKER = /\{\{([^:{}]+):([^{}]+)\}\}/g
 
+function EyeIcon() {
+  return (
+    <svg
+      className="story-viewer__toggle-icon"
+      viewBox="0 0 24 24"
+      width="18"
+      height="18"
+      aria-hidden="true"
+    >
+      <path d="M2 12C4.5 6.5 8 4 12 4s7.5 2.5 10 8c-2.5 5.5-6 8-10 8s-7.5-2.5-10-8Z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  )
+}
+
 function renderAnnotatedText(text, annotationsById, onWordTap) {
   if (!text) return null
 
@@ -129,9 +144,7 @@ function StoryViewer({ story, onFinish }) {
           aria-pressed={showJa}
           onClick={() => setShowJa((value) => !value)}
         >
-          <span className="story-viewer__toggle-icon" aria-hidden="true">
-            {showJa ? '👁️' : '👁️‍🗨️'}
-          </span>
+          <EyeIcon />
           <span className="story-viewer__toggle-label">日本語</span>
         </button>
         {hasThaiOnPage && (
@@ -141,9 +154,7 @@ function StoryViewer({ story, onFinish }) {
             aria-pressed={showThai}
             onClick={() => setShowThai((value) => !value)}
           >
-            <span className="story-viewer__toggle-icon" aria-hidden="true">
-              {showThai ? '👁️' : '👁️‍🗨️'}
-            </span>
+            <EyeIcon />
             <span className="story-viewer__toggle-label">タイ語</span>
           </button>
         )}
@@ -152,50 +163,58 @@ function StoryViewer({ story, onFinish }) {
       <div className="story-viewer__text">
         {showJa && (
           <div className="story-viewer__text-block story-viewer__text-block--ja">
-            <p>{renderAnnotatedText(currentPage.text, annotationsById, handleWordTap)}</p>
-            {currentPage.audioJa && (
-              <div className="story-viewer__audio">
-                <button
-                  type="button"
-                  className={`story-viewer__audio-button${jaAudio.hasError ? ' story-viewer__audio-button--error' : ''}`}
-                  onClick={jaAudio.toggle}
-                >
-                  {jaAudio.isPlaying ? '⏹ 停止' : '▶ 再生'}
-                </button>
-                <audio
-                  ref={jaAudio.audioRef}
-                  src={currentPage.audioJa}
-                  preload="none"
-                  onEnded={jaAudio.handleEnded}
-                  onError={jaAudio.handleError}
-                />
+            <div className="story-viewer__text-row">
+              <div className="story-viewer__text-content">
+                <p>{renderAnnotatedText(currentPage.text, annotationsById, handleWordTap)}</p>
               </div>
-            )}
+              {currentPage.audioJa && (
+                <div className="story-viewer__audio">
+                  <button
+                    type="button"
+                    className={`story-viewer__audio-button${jaAudio.hasError ? ' story-viewer__audio-button--error' : ''}`}
+                    onClick={jaAudio.toggle}
+                  >
+                    {jaAudio.isPlaying ? '⏹ 停止' : '▶ 再生'}
+                  </button>
+                  <audio
+                    ref={jaAudio.audioRef}
+                    src={currentPage.audioJa}
+                    preload="none"
+                    onEnded={jaAudio.handleEnded}
+                    onError={jaAudio.handleError}
+                  />
+                </div>
+              )}
+            </div>
           </div>
         )}
 
         {showThai && hasThaiOnPage && (
           <div className="story-viewer__text-block story-viewer__text-block--thai">
-            <p>{renderAnnotatedText(currentPage.thai, annotationsById, handleWordTap)}</p>
-            {currentPage.thaiReading && <p className="story-viewer__reading">{currentPage.thaiReading}</p>}
-            {currentPage.audioThai && (
-              <div className="story-viewer__audio">
-                <button
-                  type="button"
-                  className={`story-viewer__audio-button${thaiAudio.hasError ? ' story-viewer__audio-button--error' : ''}`}
-                  onClick={thaiAudio.toggle}
-                >
-                  {thaiAudio.isPlaying ? '⏹ 停止' : '▶ 再生'}
-                </button>
-                <audio
-                  ref={thaiAudio.audioRef}
-                  src={currentPage.audioThai}
-                  preload="none"
-                  onEnded={thaiAudio.handleEnded}
-                  onError={thaiAudio.handleError}
-                />
+            <div className="story-viewer__text-row">
+              <div className="story-viewer__text-content">
+                <p>{renderAnnotatedText(currentPage.thai, annotationsById, handleWordTap)}</p>
+                {currentPage.thaiReading && <p className="story-viewer__reading">{currentPage.thaiReading}</p>}
               </div>
-            )}
+              {currentPage.audioThai && (
+                <div className="story-viewer__audio">
+                  <button
+                    type="button"
+                    className={`story-viewer__audio-button${thaiAudio.hasError ? ' story-viewer__audio-button--error' : ''}`}
+                    onClick={thaiAudio.toggle}
+                  >
+                    {thaiAudio.isPlaying ? '⏹ 停止' : '▶ 再生'}
+                  </button>
+                  <audio
+                    ref={thaiAudio.audioRef}
+                    src={currentPage.audioThai}
+                    preload="none"
+                    onEnded={thaiAudio.handleEnded}
+                    onError={thaiAudio.handleError}
+                  />
+                </div>
+              )}
+            </div>
           </div>
         )}
       </div>
