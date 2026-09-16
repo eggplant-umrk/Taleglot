@@ -299,6 +299,10 @@
   position: absolute;
   top: calc(-1 * var(--space-3));
   right: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
   font-size: var(--text-xs);
   color: var(--color-surface-raised);
   background: var(--color-brass);
@@ -306,6 +310,16 @@
   clip-path: polygon(0 0, 100% 0, 100% 78%, 50% 100%, 0 78%);
   box-shadow: var(--shadow-soft);
   z-index: 2;
+}
+
+.story-viewer__page-count-main {
+  line-height: 1;
+}
+
+.story-viewer__koma-count {
+  font-size: 0.65rem;
+  line-height: 1;
+  opacity: 0.85;
 }
 
 .story-viewer__overlay {

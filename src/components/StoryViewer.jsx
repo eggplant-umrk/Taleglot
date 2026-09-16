@@ -67,6 +67,7 @@ function renderAnnotatedText(text, annotationsById, onWordTap) {
 function StoryViewer({ story, onFinish }) {
   const pages = story?.pages ?? []
   const [pageIndex, setPageIndex] = useState(0)
+  const [komaIndex, setKomaIndex] = useState(0)
   const [showJa, setShowJa] = useState(true)
   const [showThai, setShowThai] = useState(true)
   const [imageError, setImageError] = useState(false)
@@ -75,7 +76,12 @@ function StoryViewer({ story, onFinish }) {
   const [, setCollectedWordIds] = useState(() => new Set())
 
   const currentPage = pages[pageIndex]
+  // 本文は「コマ」単位の配列。1コマ = 画面に一度に表示する2〜3文程度のまとまり
+  const komas = currentPage?.text ?? []
+  const komaCount = komas.length
+  const isLastKoma = komaIndex >= komaCount - 1
   const isLastPage = pageIndex >= pages.length - 1
+  const isFirstKoma = pageIndex === 0 && komaIndex === 0
 
   const annotationsById = useMemo(() => {
     const map = new Map()
@@ -87,9 +93,23 @@ function StoryViewer({ story, onFinish }) {
 
   useEffect(() => {
     setImageError(false)
-    window.scrollTo(0, 0)
   }, [pageIndex])
 
+  // コマが切り替わるたびに、新しい内容を画面の上から読めるようにする
+  // （ページ送り・コマ送りのどちらでも同じ「新しい画面」として振る舞う）
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pageIndex, komaIndex])
+
+  // 開いたままの単語詳細カードが、別のコマ/ページに送っても残り続けないようにする
+  useEffect(() => {
+    setOpenAnnotationId(null)
+  }, [pageIndex, komaIndex])
+
+  // audioJa/audioThaiはページ単位のまま（コマ単位には分割しない）。
+  // 参照する値（currentPage?.audioJa等）はコマが変わっても変化しないため、
+  // 下の<audio>要素もコマ送りではアンマウントされず、再生中の音声はコマを
+  // 送っても途切れない。
   const jaAudio = useAudioPlayer(currentPage?.audioJa)
   const thaiAudio = useAudioPlayer(currentPage?.audioThai)
 
@@ -105,15 +125,28 @@ function StoryViewer({ story, onFinish }) {
   const closeCard = useCallback(() => setOpenAnnotationId(null), [])
 
   const handlePrev = () => {
-    setPageIndex((index) => Math.max(0, index - 1))
+    if (komaIndex > 0) {
+      setKomaIndex((index) => index - 1)
+      return
+    }
+    if (pageIndex > 0) {
+      const prevKomaCount = pages[pageIndex - 1]?.text?.length ?? 1
+      setPageIndex((index) => index - 1)
+      setKomaIndex(Math.max(0, prevKomaCount - 1))
+    }
   }
 
   const handleNext = () => {
+    if (!isLastKoma) {
+      setKomaIndex((index) => index + 1)
+      return
+    }
     if (isLastPage) {
       onFinish?.()
       return
     }
-    setPageIndex((index) => Math.min(pages.length - 1, index + 1))
+    setPageIndex((index) => index + 1)
+    setKomaIndex(0)
   }
 
   if (!currentPage) {
@@ -124,7 +157,12 @@ function StoryViewer({ story, onFinish }) {
     )
   }
 
-  const hasThaiOnPage = Boolean(currentPage.thai)
+  const hasThaiOnPage = Array.isArray(currentPage.thai)
+  const currentText = komas[komaIndex]
+  const currentThai = hasThaiOnPage ? currentPage.thai[komaIndex] : undefined
+  const currentThaiReading = Array.isArray(currentPage.thaiReading)
+    ? currentPage.thaiReading[komaIndex]
+    : undefined
   const openAnnotation = openAnnotationId ? annotationsById.get(openAnnotationId) : null
 
   return (
@@ -165,7 +203,7 @@ function StoryViewer({ story, onFinish }) {
           <div className="story-viewer__text-block story-viewer__text-block--ja">
             <div className="story-viewer__text-row">
               <div className="story-viewer__text-content">
-                <p>{renderAnnotatedText(currentPage.text, annotationsById, handleWordTap)}</p>
+                <p>{renderAnnotatedText(currentText, annotationsById, handleWordTap)}</p>
               </div>
               {currentPage.audioJa && (
                 <div className="story-viewer__audio">
@@ -193,8 +231,8 @@ function StoryViewer({ story, onFinish }) {
           <div className="story-viewer__text-block story-viewer__text-block--thai">
             <div className="story-viewer__text-row">
               <div className="story-viewer__text-content">
-                <p>{renderAnnotatedText(currentPage.thai, annotationsById, handleWordTap)}</p>
-                {currentPage.thaiReading && <p className="story-viewer__reading">{currentPage.thaiReading}</p>}
+                <p>{renderAnnotatedText(currentThai, annotationsById, handleWordTap)}</p>
+                {currentThaiReading && <p className="story-viewer__reading">{currentThaiReading}</p>}
               </div>
               {currentPage.audioThai && (
                 <div className="story-viewer__audio">
@@ -220,14 +258,21 @@ function StoryViewer({ story, onFinish }) {
       </div>
 
       <div className="story-viewer__nav">
-        <button type="button" onClick={handlePrev} disabled={pageIndex === 0}>
+        <button type="button" onClick={handlePrev} disabled={isFirstKoma}>
           ← 前へ
         </button>
-        <span className="story-viewer__page-count">
-          {pageIndex + 1} / {pages.length}
-        </span>
+        <div className="story-viewer__page-count">
+          <span className="story-viewer__page-count-main">
+            {pageIndex + 1} / {pages.length}
+          </span>
+          {komaCount > 1 && (
+            <span className="story-viewer__koma-count">
+              {komaIndex + 1} / {komaCount}
+            </span>
+          )}
+        </div>
         <button type="button" onClick={handleNext}>
-          {isLastPage ? '読み終わる' : '次へ →'}
+          {isLastPage && isLastKoma ? '読み終わる' : '次へ →'}
         </button>
       </div>
 
