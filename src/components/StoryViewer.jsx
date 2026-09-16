@@ -64,7 +64,7 @@ function renderAnnotatedText(text, annotationsById, onWordTap) {
   return nodes
 }
 
-function StoryViewer({ story, onFinish }) {
+function StoryViewer({ story, onFinish, onWordCollected }) {
   const pages = story?.pages ?? []
   const [pageIndex, setPageIndex] = useState(0)
   const [komaIndex, setKomaIndex] = useState(0)
@@ -72,8 +72,6 @@ function StoryViewer({ story, onFinish }) {
   const [showThai, setShowThai] = useState(true)
   const [imageError, setImageError] = useState(false)
   const [openAnnotationId, setOpenAnnotationId] = useState(null)
-  // 将来のコレクション機能向けの下地（記録のみ。UI・永続化は未実装）
-  const [, setCollectedWordIds] = useState(() => new Set())
 
   const currentPage = pages[pageIndex]
   // 本文は「コマ」単位の配列。1コマ = 画面に一度に表示する2〜3文程度のまとまり
@@ -113,14 +111,13 @@ function StoryViewer({ story, onFinish }) {
   const jaAudio = useAudioPlayer(currentPage?.audioJa)
   const thaiAudio = useAudioPlayer(currentPage?.audioThai)
 
-  const handleWordTap = useCallback((id) => {
-    setCollectedWordIds((prev) => {
-      const next = new Set(prev)
-      next.add(id)
-      return next
-    })
-    setOpenAnnotationId(id)
-  }, [])
+  const handleWordTap = useCallback(
+    (id) => {
+      onWordCollected?.(id)
+      setOpenAnnotationId(id)
+    },
+    [onWordCollected],
+  )
 
   const closeCard = useCallback(() => setOpenAnnotationId(null), [])
 

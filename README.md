@@ -16,16 +16,19 @@ npm run dev
 ```
 src/
   stories/
-    story01.json      物語データ（現時点ではダミーデータ。差し替え方法は下記参照）
+    story01.json      物語データ（「黄金のハゼ」実データ。差し替え/追加方法は下記参照）
   components/
     StoryViewer.jsx    絵本ビューア（実装済み）
     Review.jsx          振り返り（フラッシュカード、実装済み）
-  App.jsx               物語データの読み込み・StoryViewer⇄Reviewの画面切り替え
+    Collection.jsx       単語コレクション画面（実装済み）
+  hooks/
+    useCollectedWords.js  収集済み単語のlocalStorage永続化
+  App.jsx               物語データの読み込み・StoryViewer⇄Review⇄Collectionの画面切り替え
 public/
   stories/story01/       物語ごとの画像・音声ファイルの配置先（現在は空）
 ```
 
-StoryViewer.jsx / Review.jsx は実装済みです。App.jsx（複数話対応時の読み込み方法）や `src/index.css`（カラーパレットなど基本デザイン方針）など、一部のファイルには今後の実装課題がファイル冒頭の `TODO:` コメントとして残っています。
+StoryViewer.jsx / Review.jsx / Collection.jsx は実装済みです。App.jsx（複数話対応時の読み込み方法）など、一部のファイルには今後の実装課題がファイル冒頭の `TODO:` コメントとして残っています。
 
 ## 物語データの追加方法
 
@@ -148,18 +151,19 @@ public/stories/story01/
 
 `src/App.jsx` は現状 `story01.json` を直接 import し、StoryViewerを最後まで読み終えると自動的にReview（振り返り）へ画面遷移する実装になっています。複数話に対応する場合の読み込み方法（一覧画面など）は今後の実装課題です。当面は物語一覧画面を作らず、1話固定で表示する方針です（`App.jsx` 冒頭の TODO コメント参照）。
 
-### 4. 単語コレクション機能（フェーズ2）の下地について
+### 4. 単語コレクション機能について
 
-- コレクション画面・UI自体は今回のスコープ外（フェーズ2で対応予定）です。
-- ただし、タップした単語をあとから記録できるように、`annotations[].id` を物語内で一意なキーとして設計しています。将来的には、例えば以下のような形でタップ履歴をローカルに保存できることを想定しています（**未実装・イメージ例**）。
+- 本文中の単語タップ、およびReviewのフラッシュカードをめくった単語は、`useCollectedWords`フック（`src/hooks/useCollectedWords.js`）経由でブラウザの`localStorage`（キー: `taleglot:collectedWords`）に自動的に記録されます。`annotations[].id`が物語内で一意であることを前提に、`{ storyId, wordId }`の組み合わせで保存されます。
+- 実際に保存される形式は以下の通りです（`localStorage.getItem('taleglot:collectedWords')`の中身）。
 
 ```json
-{
-  "collectedWords": [
-    { "storyId": "story01", "wordId": "gongsai" }
-  ]
-}
+[
+  { "storyId": "story01", "wordId": "gongsai" }
+]
 ```
+
+- コレクション画面（`src/components/Collection.jsx`）で、収集済みの単語を一覧表示します。App.jsxの「📚コレクション」ボタンから、StoryViewer/Reviewどちらの画面からでも遷移できます。
+- コレクション画面のカードは、対応する`review[]`エントリ（`annotationId`が一致するもの）があれば画像・タイ語・意味を表示し、無ければ意味（`annotations[].word`）のみを表示します。
 
 ## Git運用について
 

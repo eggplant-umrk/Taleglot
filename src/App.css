@@ -90,6 +90,35 @@ body {
   gap: var(--space-8);
 }
 
+.app__nav {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--space-5);
+}
+
+.app__nav-button {
+  font-family: var(--font-body-jp);
+  font-size: var(--text-sm);
+  padding: var(--space-2) var(--space-4);
+  border: 2px solid var(--color-secondary);
+  border-radius: 4px 4px 0 0;
+  background: var(--color-secondary);
+  color: var(--color-surface-raised);
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.app__nav-button:hover {
+  background: var(--color-secondary-dark);
+  border-color: var(--color-secondary-dark);
+  transform: translateY(-1px);
+}
+
+.app__nav-button:focus-visible {
+  outline: 2px solid var(--color-brass);
+  outline-offset: 2px;
+}
+
 /* PC向けレイアウト（将来のスマホ対応時はこの下に別のmax-widthのメディアクエリを追加する想定） */
 @media (min-width: 768px) {
   .app {
