@@ -260,13 +260,8 @@ function StoryViewer({ story, onFinish, onWordCollected }) {
         </button>
         <div className="story-viewer__page-count">
           <span className="story-viewer__page-count-main">
-            {pageIndex + 1} / {pages.length}
+            {komaIndex + 1} / {komaCount}
           </span>
-          {komaCount > 1 && (
-            <span className="story-viewer__koma-count">
-              {komaIndex + 1} / {komaCount}
-            </span>
-          )}
         </div>
         <button type="button" onClick={handleNext}>
           {isLastPage && isLastKoma ? '読み終わる' : '次へ →'}

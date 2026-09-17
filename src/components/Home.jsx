@@ -7,7 +7,6 @@ function Home({ parts, completedParts, onSelectPart }) {
   return (
     <div className="home">
       <h1 className="home__title">Taleglot</h1>
-      <p className="home__lead">読みたいお話をえらんでね</p>
       <ul className="home__list">
         {parts.map((part, index) => (
           <li key={part.partId}>
