@@ -56,7 +56,7 @@ StoryViewer.jsx / Review.jsx / Collection.jsx は実装済みです。App.jsx（
         "ชาวบ้านมักจะมาสวดมนต์ที่นี่ทุกวัน"
       ],
       "thaiReading": ["ローマ字/カタカナ表記の読み方（任意）", "同上"],
-      "image": "/stories/story01/page01.png",
+      "images": ["/stories/story01/page01.png", "/stories/story01/page02.png"],
       "audioJa": "/stories/story01/page01_ja.mp3",
       "audioThai": "/stories/story01/page01_th.mp3"
     }
@@ -93,6 +93,11 @@ StoryViewer.jsx / Review.jsx / Collection.jsx は実装済みです。App.jsx（
 - `thaiReading`（任意項目）も使う場合は同様に配列にし、`text`/`thai` と同じ要素数にしてください。
 - 1話あたりのページ数の目安（3〜5ページ）とは別に、1ページあたりのコマ数に決まった上限はありません。本文の分量に応じて自然に区切ってください。
 
+#### `images`（コマ単位の画像）について
+
+- `pages[].images` は `text`/`thai` と**同じ要素数**の配列で、コマごとに表示する画像（イラスト）を切り替えられます。同じ画像を複数コマで使い回したい場合は、同じパスを繰り返し指定してください。
+- 1ページ内で画像を切り替える必要がない場合（イラストがページ単位でしか用意できない場合など）は、`images` の代わりに従来通り単数形の `image` を指定できます（そのページの全コマで同じ画像が表示されます）。`images` が指定されている場合はそちらが優先されます。
+
 #### 本文中の単語タップ（太字）について
 
 - コマの文字列（`text[]` / `thai[]` の各要素）の中で `{{id:表示テキスト}}` という記法を使うと、`表示テキスト` の部分が本文中で太字・タップ可能になります。`id` は `annotations[].id` と対応させてください。
@@ -121,14 +126,14 @@ StoryViewer.jsx / Review.jsx / Collection.jsx は実装済みです。App.jsx（
 
 #### 任意項目まとめ
 
-- `thai` / `thaiReading` / `titleThai` / `image` / `audioJa` / `audioThai` / `annotations` / `annotations[].categories.*`（各カテゴリ） / `review[].reading` / `review[].annotationId` は任意項目です。無い場合はその部分の表示・機能が省略されます。
+- `thai` / `thaiReading` / `titleThai` / `image` / `images` / `audioJa` / `audioThai` / `annotations` / `annotations[].categories.*`（各カテゴリ） / `review[].reading` / `review[].annotationId` は任意項目です。無い場合はその部分の表示・機能が省略されます。
 - `thai` が無いページでは、そのページのタイ語表示トグル自体を表示しません（ONにしても表示するものが無いため）。
 - 1話あたり3〜5ページ程度を目安にしてください。
 - `review` はその物語の振り返り（フラッシュカード）に使う単語リストです。
 
 ### 2. 画像・音声ファイルを配置する
 
-`public/stories/storyXX/` フォルダの下に、JSON内の `image` / `audioJa` / `audioThai` / `review[].image` / `review[].audio` に指定したパスと同じファイル名で配置してください。
+`public/stories/storyXX/` フォルダの下に、JSON内の `image` / `images` / `audioJa` / `audioThai` / `review[].image` / `review[].audio` に指定したパスと同じファイル名で配置してください。
 
 ```
 public/stories/story01/

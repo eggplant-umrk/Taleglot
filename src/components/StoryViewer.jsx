@@ -91,7 +91,7 @@ function StoryViewer({ story, onFinish, onWordCollected }) {
 
   useEffect(() => {
     setImageError(false)
-  }, [pageIndex])
+  }, [pageIndex, komaIndex])
 
   // コマが切り替わるたびに、新しい内容を画面の上から読めるようにする
   // （ページ送り・コマ送りのどちらでも同じ「新しい画面」として振る舞う）
@@ -161,12 +161,14 @@ function StoryViewer({ story, onFinish, onWordCollected }) {
     ? currentPage.thaiReading[komaIndex]
     : undefined
   const openAnnotation = openAnnotationId ? annotationsById.get(openAnnotationId) : null
+  // imagesがあればコマごとの画像、無ければ従来通りページ単位の単一画像にフォールバックする
+  const currentImage = Array.isArray(currentPage.images) ? currentPage.images[komaIndex] : currentPage.image
 
   return (
     <div className="story-viewer">
       <div className="story-viewer__image">
-        {currentPage.image && !imageError ? (
-          <img src={currentPage.image} alt="" onError={() => setImageError(true)} />
+        {currentImage && !imageError ? (
+          <img src={currentImage} alt="" onError={() => setImageError(true)} />
         ) : (
           <div className="story-viewer__image-placeholder">画像準備中</div>
         )}
@@ -260,13 +262,8 @@ function StoryViewer({ story, onFinish, onWordCollected }) {
         </button>
         <div className="story-viewer__page-count">
           <span className="story-viewer__page-count-main">
-            {pageIndex + 1} / {pages.length}
+            {komaIndex + 1} / {komaCount}
           </span>
-          {komaCount > 1 && (
-            <span className="story-viewer__koma-count">
-              {komaIndex + 1} / {komaCount}
-            </span>
-          )}
         </div>
         <button type="button" onClick={handleNext}>
           {isLastPage && isLastKoma ? '読み終わる' : '次へ →'}
