@@ -7,6 +7,7 @@ export type AnnotationCategories = {
 export type Annotation = {
   id: string
   word: string
+  wordThai?: string
   categories?: AnnotationCategories
 }
 

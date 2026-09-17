@@ -81,7 +81,7 @@ export function WordDetailCard({
       >
         <h3
           style={{
-            margin: `0 0 ${space[5]}px`,
+            margin: `0 0 ${space[1]}px`,
             fontFamily: fonts.headingJp,
             fontWeight: 600,
             color: colors.accentDark,
@@ -90,6 +90,18 @@ export function WordDetailCard({
         >
           {annotation.word}
         </h3>
+        {annotation.wordThai && (
+          <p
+            style={{
+              margin: `0 0 ${space[5]}px`,
+              fontFamily: fonts.headingThai,
+              color: colors.textThai,
+              fontSize: '1.3rem',
+            }}
+          >
+            {annotation.wordThai}
+          </p>
+        )}
         {categories.map(([key, value]) => (
           <section key={key} style={{ marginBottom: space[5] }}>
             <h4
