@@ -5,6 +5,7 @@ import { AppCard } from '../ui/AppCard'
 import { HomeScreen } from '../ui/HomeScreen'
 import { colors, fonts } from '../tokens'
 import { springIn } from '../utils/tap'
+import { Logo } from '../ui/Logo'
 
 export function OpeningScene() {
   const frame = useCurrentFrame()
@@ -33,20 +34,17 @@ export function OpeningScene() {
   return (
     <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center' }}>
       <AmbientBackground />
-      <AppCard scale={cardScale} style={{ opacity: cardOpacity, width: 980 }}>
+      <AppCard scale={cardScale} style={{ opacity: cardOpacity, width: 1160 }}>
         <div style={{ textAlign: 'center', marginBottom: 28 }}>
           <h1
             style={{
               margin: 0,
-              fontFamily: fonts.headingJp,
-              fontSize: '4rem',
-              color: colors.accentDark,
               opacity: titleOpacity,
               transform: `scale(${titleScale})`,
               transformOrigin: 'center',
             }}
           >
-            Taleglot
+            <Logo fontSize="4rem" />
           </h1>
           <p
             style={{

@@ -1,5 +1,6 @@
 import React from 'react'
 import { colors, fonts, shadows, space } from '../tokens'
+import { Logo } from './Logo'
 
 const PARTS = ['黄金のハゼ Part1', '黄金のハゼ Part2', '黄金のハゼ Part3']
 
@@ -29,14 +30,11 @@ export function HomeScreen({
         <h1
           style={{
             margin: 0,
-            fontFamily: fonts.headingJp,
-            fontSize: '2.2rem',
-            color: colors.accentDark,
             opacity: titleProgress,
             transform: `translateZ(0) scale(${0.85 + titleProgress * 0.15})`,
           }}
         >
-          Taleglot
+          <Logo fontSize="2.2rem" />
         </h1>
       )}
       <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: space[4] }}>

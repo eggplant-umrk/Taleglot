@@ -70,9 +70,9 @@ export function WordDetailCard({
         style={{
           ...cardTexture,
           position: 'relative',
-          width: 480,
+          width: 640,
           borderRadius: 4,
-          padding: space[6],
+          padding: space[8],
           border: `1px solid ${colors.border}`,
           boxShadow: shadows.card,
           transform: `translate(${translateX}px, ${translateY}px) scale(${scale})`,
@@ -85,7 +85,7 @@ export function WordDetailCard({
             fontFamily: fonts.headingJp,
             fontWeight: 600,
             color: colors.accentDark,
-            fontSize: '1.4rem',
+            fontSize: '1.9rem',
           }}
         >
           {annotation.word}
@@ -97,12 +97,12 @@ export function WordDetailCard({
                 margin: `0 0 ${space[1]}px`,
                 fontFamily: fonts.headingJp,
                 color: colors.secondaryDark,
-                fontSize: '1rem',
+                fontSize: '1.3rem',
               }}
             >
               {CATEGORY_LABELS[key]}
             </h4>
-            <p style={{ margin: 0, lineHeight: 1.7, fontFamily: fonts.bodyJp }}>{value}</p>
+            <p style={{ margin: 0, lineHeight: 1.7, fontFamily: fonts.bodyJp, fontSize: '1.15rem' }}>{value}</p>
           </section>
         ))}
       </div>

@@ -16,7 +16,7 @@ export const SCENES = [
   { name: 'Discover', durationInFrames: 16 * FPS, Component: DiscoverScene },
   { name: 'Collect', durationInFrames: 9 * FPS, Component: CollectScene },
   { name: 'Review', durationInFrames: 9 * FPS, Component: ReviewScene },
-  { name: 'Closing', durationInFrames: 4 * FPS, Component: ClosingScene },
+  { name: 'Closing', durationInFrames: 5 * FPS, Component: ClosingScene },
 ]
 
 const TOTAL_DURATION = SCENES.reduce((sum, scene) => sum + scene.durationInFrames, 0)

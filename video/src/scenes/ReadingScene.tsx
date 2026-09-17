@@ -8,6 +8,7 @@ import { NavButtons } from '../ui/NavButtons'
 import { annotationsById, story01 } from '../data'
 import { getTapAnimation } from '../utils/tap'
 import { SfxCue } from '../ui/Sfx'
+import { TapPointer } from '../ui/TapPointer'
 
 const page1 = story01.pages[0]
 
@@ -18,7 +19,11 @@ const KOMAS = [0, 1, 2].map((i) => ({
 }))
 
 const HOME_END = 20
-const MORPH_END = 55
+const MORPH_END = 70
+// Part1ボタン(リストの1項目目)のおおよその画面上の位置。ズームの原点をここに正確に合わせることで
+// 「ボタンの中に入っていく」ような連続性を出す（実測値は静止画レンダリングで微調整）。
+const PART1_BUTTON_X = 50
+const PART1_BUTTON_Y = 43
 const KOMA0_END = 150
 const TRANSITION_1_TAP = 155
 const TRANSITION_1_END = 172
@@ -67,13 +72,23 @@ export function ReadingScene() {
     extrapolateRight: 'clamp',
     easing: Easing.bezier(0.25, 1, 0.5, 1),
   })
-  // Zoom "through" the tapped Part1 card into the story stage.
-  const morphScale = interpolate(morphT, [0, 1], [1, 2.6])
-  const morphOriginY = interpolate(morphT, [0, 1], [50, 30])
-  const stageOpacity = interpolate(frame, [MORPH_END - 15, MORPH_END], [0, 1], {
+  // Zoom "through" the tapped Part1 card into the story stage. The origin is
+  // pinned to the button's actual position so the camera reads as pushing
+  // INTO that specific button, not just zooming into the middle of the screen.
+  const morphScale = interpolate(morphT, [0, 1], [1, 3.4])
+  const stageEntranceWindow: [number, number] = [MORPH_END - 24, MORPH_END]
+  const stageOpacity = interpolate(frame, stageEntranceWindow, [0, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   })
+  // Stage starts slightly zoomed-in and settles to 1x, matching the direction
+  // of the Home layer's zoom so the two layers feel like one continuous push.
+  const stageEntranceT = interpolate(frame, stageEntranceWindow, [0, 1], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+    easing: Easing.bezier(0.25, 1, 0.5, 1),
+  })
+  const stageScale = interpolate(stageEntranceT, [0, 1], [1.16, 1])
 
   const showHome = frame < MORPH_END
   const showStage = frame >= HOME_END
@@ -109,19 +124,30 @@ export function ReadingScene() {
             justifyContent: 'center',
             opacity: homeOpacity,
             transform: `scale(${morphScale})`,
-            transformOrigin: `50% ${morphOriginY}%`,
+            transformOrigin: `${PART1_BUTTON_X}% ${PART1_BUTTON_Y}%`,
           }}
         >
-          <AppCard width={980}>
+          <AppCard width={1160}>
             <HomeScreen titleProgress={1} itemProgress={[1, 1, 1]} itemPress={homeTap.pressScale} />
           </AppCard>
+          <TapPointer xPercent={PART1_BUTTON_X} yPercent={PART1_BUTTON_Y} frame={frame} tapFrame={15} />
         </div>
       )}
 
       {showStage && (
-        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: stageOpacity }}>
-          <AppCard width={1200}>
-            <div style={{ position: 'relative', width: '100%', height: 640, overflow: 'hidden', borderRadius: 4 }}>
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            opacity: stageOpacity,
+            transform: `scale(${stageScale})`,
+          }}
+        >
+          <AppCard width={1450}>
+            <div style={{ position: 'relative', width: '100%', height: 720, overflow: 'hidden', borderRadius: 4 }}>
               <div
                 style={{
                   position: 'absolute',
@@ -131,7 +157,7 @@ export function ReadingScene() {
               >
                 <StoryStage
                   image={current.image}
-                  height={640}
+                  height={720}
                   jaText={current.text}
                   thaiText={current.thai}
                   annotationsById={annotationsById}
@@ -147,7 +173,7 @@ export function ReadingScene() {
                 >
                   <StoryStage
                     image={next.image}
-                    height={640}
+                    height={720}
                     jaText={next.text}
                     thaiText={next.thai}
                     annotationsById={annotationsById}

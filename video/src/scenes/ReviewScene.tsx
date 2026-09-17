@@ -63,7 +63,7 @@ export function ReviewScene() {
       <AmbientBackground />
       <SfxCue frame={CARD1_TAP} name="flip" volume={0.6} />
       <SfxCue frame={CARD2_TAP} name="flip" volume={0.6} />
-      <AppCard width={780} scale={entryScale} style={{ opacity: entryOpacity }}>
+      <AppCard width={1050} scale={entryScale} style={{ opacity: entryOpacity }}>
         <div
           style={{
             display: 'flex',
@@ -83,7 +83,7 @@ export function ReviewScene() {
               transform: `translateX(${switchOffsetX}px) scale(${tap.pressScale})`,
             }}
           >
-            <FlashCard card={card} flipDegrees={flip} width={420} />
+            <FlashCard card={card} flipDegrees={flip} width={580} />
           </div>
           <div
             style={{

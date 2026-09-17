@@ -6,6 +6,7 @@ import { LightSweep } from '../ui/LightSweep'
 import { colors, fonts } from '../tokens'
 import { springIn } from '../utils/tap'
 import { SfxCue } from '../ui/Sfx'
+import { Logo } from '../ui/Logo'
 
 export function ClosingScene() {
   const frame = useCurrentFrame()
@@ -20,9 +21,12 @@ export function ClosingScene() {
     extrapolateRight: 'clamp',
   })
 
-  const logoOpacity = interpolate(frame, [50, 65], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' })
+  const taglineOpacity = interpolate(frame, [55, 70], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' })
+  const taglineY = interpolate(frame, [55, 70], [12, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' })
 
-  const fadeOut = interpolate(frame, [105, 120], [1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' })
+  const logoOpacity = interpolate(frame, [78, 93], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' })
+
+  const fadeOut = interpolate(frame, [132, 150], [1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' })
 
   return (
     <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center', opacity: fadeOut }}>
@@ -36,19 +40,23 @@ export function ClosingScene() {
         通常フローの子要素より後に描画される）。position+zIndexで明示的にスタッキングコンテキストを
         作り、この見出し/バッジを背景より確実に手前に出す。
       */}
-      <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24 }}>
+      <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
         <CompleteBadge scale={badgeScale} opacity={badgeOpacity} />
         <p
           style={{
             margin: 0,
-            fontFamily: fonts.headingJp,
-            fontSize: '2.4rem',
-            color: colors.accentDark,
-            opacity: logoOpacity,
+            fontFamily: fonts.bodyJp,
+            fontSize: '1.4rem',
+            color: colors.accent,
+            opacity: taglineOpacity,
+            transform: `translateY(${taglineY}px)`,
           }}
         >
-          Taleglot
+          物語から、ことばを集めよう。
         </p>
+        <div style={{ opacity: logoOpacity, marginTop: 4 }}>
+          <Logo fontSize="2.4rem" />
+        </div>
       </div>
     </AbsoluteFill>
   )

@@ -8,6 +8,7 @@ import { CardBackdrop, WordDetailCard } from '../ui/WordDetailCard'
 import { annotationsById, getAnnotation, story01 } from '../data'
 import { getTapAnimation } from '../utils/tap'
 import { SfxCue } from '../ui/Sfx'
+import { TapPointer } from '../ui/TapPointer'
 
 const page1 = story01.pages[0]
 
@@ -15,8 +16,11 @@ const page1 = story01.pages[0]
 const KOMA_A = { image: page1.images![2], text: page1.text[2], thai: page1.thai![2] }
 // Beat B: image-element tap on the golden fish (paaboothong) — koma index 5, page03.jpg
 const KOMA_B = { image: page1.images![5], text: page1.text[5], thai: page1.thai![5] }
-// Estimated position of the fish within page03.jpg (% of stage box)
-const FISH_HOTSPOT = { x: 41, y: 78 }
+// Estimated position of the fish within page03.jpg (% of stage box, re-measured
+// after the stage was enlarged to 1450x720)
+const FISH_HOTSPOT = { x: 41, y: 85 }
+// Approximate position of 「恋しくて」within the overlay bar text (% of stage box)
+const WORD_A_HOTSPOT = { x: 29, y: 90 }
 
 const TAP_A = 30
 const CLOSE_A_START = 150
@@ -45,16 +49,17 @@ export function DiscoverScene() {
   const cardAEntry = spring({
     frame: frame - (TAP_A + 18),
     fps,
-    config: { damping: 12, stiffness: 170, mass: 0.8 },
+    config: { damping: 9, stiffness: 200, mass: 0.8 },
   })
   const cardAOpacity = interpolate(frame, [TAP_A + 18, TAP_A + 34, CLOSE_A_START, CLOSE_A_END], [0, 1, 1, 0], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   })
+  // 50%→~110%→100%のオーバーシュートで「発見できた」ことを弾むように示す
   const cardAScale = frame < CLOSE_A_START
-    ? cardAEntry
+    ? interpolate(cardAEntry, [0, 1], [0.5, 1])
     : interpolate(frame, [CLOSE_A_START, CLOSE_A_END], [1, 0.85], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' })
-  const cardATranslateY = interpolate(cardAEntry, [0, 1], [40, 0])
+  const cardATranslateY = interpolate(cardAEntry, [0, 1], [60, 0])
 
   // ---- Page swipe: page02 -> page03 ----
   const showingB = frame >= SWIPE_START + (SWIPE_END - SWIPE_START) / 2
@@ -80,7 +85,7 @@ export function DiscoverScene() {
   const cardBEntry = spring({
     frame: frame - CARD_B_DELAY,
     fps,
-    config: { damping: 12, stiffness: 170, mass: 0.8 },
+    config: { damping: 9, stiffness: 200, mass: 0.8 },
   })
   const cardBOpacity = interpolate(frame, [CARD_B_DELAY, CARD_B_DELAY + 16, HOLD_B_END, FLY_END], [0, 1, 1, 0], {
     extrapolateLeft: 'clamp',
@@ -91,8 +96,9 @@ export function DiscoverScene() {
     extrapolateRight: 'clamp',
     easing: Easing.in(Easing.cubic),
   })
-  const cardBScale = frame < HOLD_B_END ? cardBEntry : interpolate(flyT, [0, 1], [1, 0.18])
-  const cardBTranslateY = frame < HOLD_B_END ? interpolate(cardBEntry, [0, 1], [40, 0]) : interpolate(flyT, [0, 1], [0, 360])
+  const cardBScaleIn = interpolate(cardBEntry, [0, 1], [0.5, 1])
+  const cardBScale = frame < HOLD_B_END ? cardBScaleIn : interpolate(flyT, [0, 1], [1, 0.18])
+  const cardBTranslateY = frame < HOLD_B_END ? interpolate(cardBEntry, [0, 1], [60, 0]) : interpolate(flyT, [0, 1], [0, 360])
   const cardBTranslateX = frame < HOLD_B_END ? 0 : interpolate(flyT, [0, 1], [0, 620])
 
   return (
@@ -103,8 +109,8 @@ export function DiscoverScene() {
       <SfxCue frame={SWIPE_START} name="whoosh" volume={0.45} />
       <SfxCue frame={TAP_B} name="tap" volume={0.7} />
       <SfxCue frame={TAP_B + 18} name="cardPop" volume={0.6} />
-      <AppCard width={1200}>
-        <div style={{ position: 'relative', width: '100%', height: 640, overflow: 'hidden', borderRadius: 4 }}>
+      <AppCard width={1450}>
+        <div style={{ position: 'relative', width: '100%', height: 720, overflow: 'hidden', borderRadius: 4 }}>
           <div
             style={{
               position: 'absolute',
@@ -114,7 +120,7 @@ export function DiscoverScene() {
           >
             <StoryStage
               image={KOMA_A.image}
-              height={640}
+              height={720}
               jaText={KOMA_A.text}
               thaiText={KOMA_A.thai}
               annotationsById={annotationsById}
@@ -122,6 +128,9 @@ export function DiscoverScene() {
               pressProgress={pressProgressA}
               glow={tapA.rippleOpacity}
             />
+            {frame < SWIPE_START && (
+              <TapPointer xPercent={WORD_A_HOTSPOT.x} yPercent={WORD_A_HOTSPOT.y} frame={frame} tapFrame={TAP_A} />
+            )}
           </div>
 
           {(isSwiping || showingB) && (
@@ -134,7 +143,7 @@ export function DiscoverScene() {
             >
               <StoryStage
                 image={KOMA_B.image}
-                height={640}
+                height={720}
                 jaText={KOMA_B.text}
                 thaiText={KOMA_B.thai}
                 annotationsById={annotationsById}
@@ -149,6 +158,7 @@ export function DiscoverScene() {
                       rippleProgress={tapB.rippleProgress}
                       rippleOpacity={tapB.rippleOpacity}
                     />
+                    <TapPointer xPercent={FISH_HOTSPOT.x} yPercent={FISH_HOTSPOT.y} frame={frame} tapFrame={TAP_B} />
                   </div>
                 )}
               </StoryStage>

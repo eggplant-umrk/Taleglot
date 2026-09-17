@@ -9,6 +9,7 @@ export function CollectionGrid({
   incomingIndex,
   incomingScale,
   incomingOpacity,
+  incomingTranslateX,
   incomingTranslateY,
   incomingRotate,
   glowOpacity,
@@ -19,6 +20,7 @@ export function CollectionGrid({
   incomingIndex?: number
   incomingScale?: number
   incomingOpacity?: number
+  incomingTranslateX?: number
   incomingTranslateY?: number
   incomingRotate?: number
   glowOpacity?: number
@@ -37,6 +39,7 @@ export function CollectionGrid({
         const isIncoming = i === incomingIndex
         const scale = isIncoming ? incomingScale ?? 1 : 1
         const opacity = isIncoming ? incomingOpacity ?? 1 : 1
+        const translateX = isIncoming ? incomingTranslateX ?? 0 : 0
         const translateY = isIncoming ? incomingTranslateY ?? 0 : 0
         const rotate = isIncoming ? incomingRotate ?? 0 : 0
         return (
@@ -51,7 +54,7 @@ export function CollectionGrid({
               background: colors.surfaceAlt,
               overflow: 'visible',
               boxShadow: shadows.bookEdge,
-              transform: `translateY(${translateY}px) rotate(${rotate}deg) scale(${scale})`,
+              transform: `translate(${translateX}px, ${translateY}px) rotate(${rotate}deg) scale(${scale})`,
               opacity,
             }}
           >

@@ -28,15 +28,18 @@ export function FlashCard({
   width?: number
 }) {
   const height = (width * 3) / 4
+  // 回転角のsinカーブに連動して、真横を向く瞬間(90deg付近)にカメラが
+  // わずかに手前へ寄るズームを加える。純粋な回転だけだと平坦に見えるための対策。
+  const zoomBump = 1 + 0.1 * Math.sin((flipDegrees * Math.PI) / 180)
   return (
-    <div style={{ perspective: 1600 }}>
+    <div style={{ perspective: 2600 }}>
       <div
         style={{
           position: 'relative',
           width,
           height,
           transformStyle: 'preserve-3d',
-          transform: `rotateY(${flipDegrees}deg)`,
+          transform: `scale(${zoomBump}) rotateY(${flipDegrees}deg)`,
           boxShadow: shadows.bookEdge,
           borderRadius: 3,
         }}
@@ -88,13 +91,24 @@ export function FlashCard({
             padding: 24,
           }}
         >
-          <p style={{ margin: 0, fontFamily: fonts.headingThai, fontSize: '2.2rem', color: colors.textThai }}>
+          <p style={{ margin: 0, fontFamily: fonts.headingThai, fontSize: '2.7rem', color: colors.textThai }}>
             {card.word}
           </p>
           {card.reading && (
-            <p style={{ margin: 0, fontSize: '0.8rem', color: colors.muted }}>{card.reading}</p>
+            <p
+              style={{
+                margin: 0,
+                fontSize: '1.05rem',
+                letterSpacing: '0.04em',
+                color: colors.brass,
+                fontWeight: 600,
+              }}
+            >
+              {card.reading}
+            </p>
           )}
-          <p style={{ margin: 0, fontFamily: fonts.bodyJp, fontSize: '1.25rem', color: colors.text }}>
+          <div style={{ fontSize: '1.2rem', color: colors.border, lineHeight: 1 }}>↓</div>
+          <p style={{ margin: 0, fontFamily: fonts.bodyJp, fontSize: '1.5rem', color: colors.text }}>
             {card.meaning}
           </p>
         </div>
