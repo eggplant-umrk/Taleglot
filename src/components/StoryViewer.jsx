@@ -285,6 +285,9 @@ function StoryViewer({ story, onFinish, onWordCollected }) {
               ×
             </button>
             <h3>{openAnnotation.word}</h3>
+            {openAnnotation.wordThai && (
+              <p className="story-viewer__card-thai">{openAnnotation.wordThai}</p>
+            )}
             {openAnnotation.categories?.lifestyle && (
               <section>
                 <h4>暮らし</h4>
