@@ -174,82 +174,85 @@ function StoryViewer({ story, onFinish, onWordCollected }) {
         )}
 
         <div className="story-viewer__overlay-bar">
-          <div className="story-viewer__toggles">
-            <button
-              type="button"
-              className="story-viewer__toggle"
-              aria-pressed={showJa}
-              onClick={() => setShowJa((value) => !value)}
-            >
-              <EyeIcon />
-              <span className="story-viewer__toggle-label">日本語</span>
-            </button>
-            {hasThaiOnPage && (
-              <button
-                type="button"
-                className="story-viewer__toggle"
-                aria-pressed={showThai}
-                onClick={() => setShowThai((value) => !value)}
-              >
-                <EyeIcon />
-                <span className="story-viewer__toggle-label">タイ語</span>
-              </button>
-            )}
-          </div>
-
           <div className="story-viewer__text">
-            {showJa && (
-              <div className="story-viewer__text-block story-viewer__text-block--ja">
-                <div className="story-viewer__text-row">
-                  <div className="story-viewer__text-content">
-                    <p>{renderAnnotatedText(currentText, annotationsById, handleWordTap)}</p>
-                  </div>
-                  {currentPage.audioJa && (
-                    <div className="story-viewer__audio">
-                      <button
-                        type="button"
-                        className={`story-viewer__audio-button${jaAudio.hasError ? ' story-viewer__audio-button--error' : ''}`}
-                        onClick={jaAudio.toggle}
-                      >
-                        {jaAudio.isPlaying ? '⏹ 停止' : '▶ 再生'}
-                      </button>
-                      <audio
-                        ref={jaAudio.audioRef}
-                        src={currentPage.audioJa}
-                        preload="none"
-                        onEnded={jaAudio.handleEnded}
-                        onError={jaAudio.handleError}
-                      />
+            <div className="story-viewer__text-block story-viewer__text-block--ja">
+              <div className="story-viewer__text-row">
+                <button
+                  type="button"
+                  className="story-viewer__toggle story-viewer__toggle--ja"
+                  aria-pressed={showJa}
+                  aria-label="日本語表示を切り替え"
+                  onClick={() => setShowJa((value) => !value)}
+                >
+                  <EyeIcon />
+                  <span className="story-viewer__toggle-label" aria-hidden="true">JA</span>
+                </button>
+                {showJa && (
+                  <>
+                    <div className="story-viewer__text-content">
+                      <p>{renderAnnotatedText(currentText, annotationsById, handleWordTap)}</p>
                     </div>
-                  )}
-                </div>
+                    {currentPage.audioJa && (
+                      <div className="story-viewer__audio">
+                        <button
+                          type="button"
+                          className={`story-viewer__audio-button${jaAudio.hasError ? ' story-viewer__audio-button--error' : ''}`}
+                          onClick={jaAudio.toggle}
+                        >
+                          {jaAudio.isPlaying ? '⏹ 停止' : '▶ 再生'}
+                        </button>
+                        <audio
+                          ref={jaAudio.audioRef}
+                          src={currentPage.audioJa}
+                          preload="none"
+                          onEnded={jaAudio.handleEnded}
+                          onError={jaAudio.handleError}
+                        />
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
-            )}
+            </div>
 
-            {showThai && hasThaiOnPage && (
+            {hasThaiOnPage && (
               <div className="story-viewer__text-block story-viewer__text-block--thai">
                 <div className="story-viewer__text-row">
-                  <div className="story-viewer__text-content">
-                    <p>{renderAnnotatedText(currentThai, annotationsById, handleWordTap)}</p>
-                    {currentThaiReading && <p className="story-viewer__reading">{currentThaiReading}</p>}
-                  </div>
-                  {currentPage.audioThai && (
-                    <div className="story-viewer__audio">
-                      <button
-                        type="button"
-                        className={`story-viewer__audio-button${thaiAudio.hasError ? ' story-viewer__audio-button--error' : ''}`}
-                        onClick={thaiAudio.toggle}
-                      >
-                        {thaiAudio.isPlaying ? '⏹ 停止' : '▶ 再生'}
-                      </button>
-                      <audio
-                        ref={thaiAudio.audioRef}
-                        src={currentPage.audioThai}
-                        preload="none"
-                        onEnded={thaiAudio.handleEnded}
-                        onError={thaiAudio.handleError}
-                      />
-                    </div>
+                  <button
+                    type="button"
+                    className="story-viewer__toggle story-viewer__toggle--thai"
+                    aria-pressed={showThai}
+                    aria-label="タイ語表示を切り替え"
+                    onClick={() => setShowThai((value) => !value)}
+                  >
+                    <EyeIcon />
+                    <span className="story-viewer__toggle-label" aria-hidden="true">TH</span>
+                  </button>
+                  {showThai && (
+                    <>
+                      <div className="story-viewer__text-content">
+                        <p>{renderAnnotatedText(currentThai, annotationsById, handleWordTap)}</p>
+                        {currentThaiReading && <p className="story-viewer__reading">{currentThaiReading}</p>}
+                      </div>
+                      {currentPage.audioThai && (
+                        <div className="story-viewer__audio">
+                          <button
+                            type="button"
+                            className={`story-viewer__audio-button${thaiAudio.hasError ? ' story-viewer__audio-button--error' : ''}`}
+                            onClick={thaiAudio.toggle}
+                          >
+                            {thaiAudio.isPlaying ? '⏹ 停止' : '▶ 再生'}
+                          </button>
+                          <audio
+                            ref={thaiAudio.audioRef}
+                            src={currentPage.audioThai}
+                            preload="none"
+                            onEnded={thaiAudio.handleEnded}
+                            onError={thaiAudio.handleError}
+                          />
+                        </div>
+                      )}
+                    </>
                   )}
                 </div>
               </div>

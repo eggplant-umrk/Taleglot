@@ -64,20 +64,21 @@
   overflow-y: auto;
 }
 
-.story-viewer__toggles {
-  display: flex;
-  justify-content: center;
-  gap: var(--space-1);
-}
-
+/*
+ * toggle: 各言語行の左端に置く円形のアイコンボタン。
+ * テキストラベルは持たず、目アイコン＋小さな2文字(JA/TH)のみで表示言語を示す。
+ * ON時の地色を言語ごとに変え(JA=緑、TH=金)、アイコンが同じ形でも一目で区別できるようにする。
+ */
 .story-viewer__toggle {
-  display: inline-flex;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: var(--space-2);
-  font-family: var(--font-body-jp);
-  font-size: var(--text-sm);
-  padding: var(--space-1) var(--space-3);
-  border-radius: 3px 14px 3px 14px;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: 50%;
   border: 2px solid var(--color-secondary);
   background: var(--color-secondary);
   color: var(--color-surface-raised);
@@ -87,6 +88,8 @@
 
 .story-viewer__toggle-icon {
   flex-shrink: 0;
+  width: 15px;
+  height: 15px;
 }
 
 .story-viewer__toggle-icon path {
@@ -103,13 +106,26 @@
 }
 
 .story-viewer__toggle-label {
+  font-size: 0.55rem;
+  font-weight: 700;
   line-height: 1;
+  letter-spacing: 0.02em;
 }
 
 .story-viewer__toggle:hover {
   background: var(--color-secondary-dark);
   border-color: var(--color-secondary-dark);
   transform: translateY(-1px);
+}
+
+.story-viewer__toggle--thai {
+  border-color: var(--color-brass);
+  background: var(--color-brass);
+}
+
+.story-viewer__toggle--thai:hover {
+  background: #8f6a34;
+  border-color: #8f6a34;
 }
 
 .story-viewer__toggle[aria-pressed='false'] {
@@ -155,8 +171,7 @@
 .story-viewer__text-row {
   display: flex;
   align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--space-4);
+  gap: var(--space-3);
 }
 
 .story-viewer__text-content {
