@@ -43,17 +43,19 @@ function App() {
 
   return (
     <div className="app">
-      <div className="app__nav">
-        {view === 'collection' ? (
-          <button type="button" className="app__nav-button" onClick={() => setView(previousView)}>
-            ← もどる
-          </button>
-        ) : (
-          <button type="button" className="app__nav-button" onClick={openCollection}>
-            📚 コレクション（{collectedWords.length}）
-          </button>
-        )}
-      </div>
+      {view !== 'story' && view !== 'review' && (
+        <div className="app__nav">
+          {view === 'collection' ? (
+            <button type="button" className="app__nav-button" onClick={() => setView(previousView)}>
+              ← もどる
+            </button>
+          ) : (
+            <button type="button" className="app__nav-button" onClick={openCollection}>
+              📚 コレクション（{collectedWords.length}）
+            </button>
+          )}
+        </div>
+      )}
       <main>
         {view === 'home' && (
           <Home parts={parts} completedParts={completedParts} onSelectPart={handleSelectPart} />
