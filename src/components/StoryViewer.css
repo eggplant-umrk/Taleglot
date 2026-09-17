@@ -376,11 +376,18 @@
 }
 
 .story-viewer__card h3 {
-  margin: 0 0 var(--space-5);
+  margin: 0 0 var(--space-1);
   font-family: var(--font-heading-jp);
   font-weight: 600;
   color: var(--color-accent-dark);
   font-size: var(--text-lg);
+}
+
+.story-viewer__card-thai {
+  margin: 0 0 var(--space-5);
+  font-family: var(--font-heading-thai);
+  color: var(--color-text-thai);
+  font-size: var(--text-base);
 }
 
 .story-viewer__card h3::after {
