@@ -10,13 +10,16 @@
 
 /*
  * stage: 画像を画面高さいっぱいに近い形で表示する土台。
- * オーバーレイ帯(overlay-bar)はこのstageの高さに対する比率で高さを決めるため、
- * 文章量が変わっても帯の高さ自体はほぼ一定に保たれる。
+ * ビューポート高さから.appの余白・ナビの高さなど既知の分だけを差し引いた
+ * 残り全部の高さ(calc(100vh - ...))を割り当てることで、
+ * vhの大まかな割合指定では生じていた「画像とナビの間の余分な空白」を無くす。
+ * 内側の数値は.appのmargin/padding(space-8/space-6)とnavの実測高さに基づく。
+ * デスクトップ版の値は下部の@media (min-width: 768px)で上書きする。
  */
 .story-viewer__stage {
   position: relative;
   width: 100%;
-  height: clamp(320px, 60vh, 680px);
+  height: clamp(280px, calc(100vh - 224px), 760px);
   background: var(--color-surface-alt);
   border: 1px solid var(--color-border);
   border-radius: 4px;
@@ -40,18 +43,18 @@
 }
 
 /*
- * overlay-bar: 画像下部に重ねる半透明の帯。高さはstageに対する比率(32%)で決め、
- * 文章量では伸び縮みしない。将来的に画像内の要素をタップする機能を追加しても
- * 隠れすぎないよう、画像上部の7割以上は常に見える状態を保つ。
+ * overlay-bar: 画像下部に重ねる半透明の帯。
+ * top指定を入れず、bottom:0のまま高さをcontentに合わせる(shrink-to-fit)ことで、
+ * 1コマ=1文になった本文の分だけの必要最小限の薄さに保つ。
+ * 文章量による伸び縮みは1文単位なのでもともと小さいが、想定外に長い場合の
+ * 保険としてmax-heightとoverflow-y: autoを残す。
  */
 .story-viewer__overlay-bar {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  height: 32%;
-  min-height: 190px;
-  max-height: 290px;
+  max-height: 45%;
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
@@ -426,5 +429,10 @@
 @media (min-width: 768px) {
   .story-viewer {
     font-size: var(--text-body-lg);
+  }
+
+  /* デスクトップは.appの上下paddingがspace-6に減るため、その分stageを高く取れる */
+  .story-viewer__stage {
+    height: clamp(280px, calc(100vh - 208px), 760px);
   }
 }
