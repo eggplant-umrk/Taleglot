@@ -2,13 +2,11 @@ import { useState } from 'react'
 import useAudioPlayer from '../hooks/useAudioPlayer'
 import './Review.css'
 
-function Review({ story }) {
+function Review({ story, onWordCollected }) {
   const cards = story?.review ?? []
   const [cardIndex, setCardIndex] = useState(0)
   const [flipped, setFlipped] = useState(false)
   const [imageError, setImageError] = useState(false)
-  // 将来のコレクション機能向けの下地（記録のみ。UI・永続化は未実装）
-  const [, setCollectedIds] = useState(() => new Set())
 
   const currentCard = cards[cardIndex]
   const isFinished = cardIndex >= cards.length
@@ -21,11 +19,7 @@ function Review({ story }) {
       if (next) {
         const id = currentCard.annotationId ?? currentCard.id
         if (id) {
-          setCollectedIds((prev) => {
-            const nextSet = new Set(prev)
-            nextSet.add(id)
-            return nextSet
-          })
+          onWordCollected?.(id)
         }
       }
       return next
