@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import useAudioPlayer from '../hooks/useAudioPlayer'
 import './Review.css'
 
-function Review({ story, onWordCollected }) {
+function Review({ story, onWordCollected, onFinish }) {
   const cards = story?.review ?? []
   const [cardIndex, setCardIndex] = useState(0)
   const [flipped, setFlipped] = useState(false)
@@ -11,6 +11,15 @@ function Review({ story, onWordCollected }) {
   const currentCard = cards[cardIndex]
   const isFinished = cardIndex >= cards.length
   const cardAudio = useAudioPlayer(currentCard?.audio)
+  const hasFinishedRef = useRef(false)
+
+  // 全カードを見終えたら1回だけonFinishを呼ぶ（呼び出し側が次の画面に遷移するのに使う）
+  useEffect(() => {
+    if (isFinished && cards.length > 0 && !hasFinishedRef.current) {
+      hasFinishedRef.current = true
+      onFinish?.()
+    }
+  }, [isFinished, cards.length, onFinish])
 
   const handleFlip = () => {
     if (!currentCard) return
@@ -51,6 +60,9 @@ function Review({ story, onWordCollected }) {
   }
 
   if (isFinished) {
+    // onFinishが渡されている場合は呼び出し側が次の画面（コンプリート表示など）に
+    // 遷移する想定なので、ここでは何も表示しない
+    if (onFinish) return null
     return (
       <div className="review">
         <div className="review__done">
