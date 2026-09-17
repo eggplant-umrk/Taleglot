@@ -114,8 +114,6 @@
   flex-direction: column;
   gap: var(--space-5);
   width: 100%;
-  max-width: 640px;
-  margin: 0 auto;
 }
 
 .story-viewer__text-block {
@@ -417,9 +415,8 @@
 
 /*
  * 画像を主役にするため、画面幅を問わず「画像→トグル→本文→ナビ」の縦積みで統一する。
- * 画像は.story-viewer幅いっぱい（.appの余白を除いたコンテンツ幅）を使い、
- * 本文・ナビだけをmax-width: 640pxで中央寄せして幅を絞ることで、画像が本文より
- * 明確に大きく見える構成にしている（story-viewer__text / __navの定義を参照）。
+ * 画像・本文はどちらも.story-viewer幅いっぱい（.appの余白を除いたコンテンツ幅）を使う。
+ * ナビだけはmax-width: 640pxで中央寄せして幅を絞っている（story-viewer__navの定義を参照）。
  * PC版では本文の文字サイズのみ拡大する。
  */
 @media (min-width: 768px) {
