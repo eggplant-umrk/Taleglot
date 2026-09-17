@@ -74,7 +74,7 @@ function StoryViewer({ story, onFinish, onWordCollected }) {
   const [openAnnotationId, setOpenAnnotationId] = useState(null)
 
   const currentPage = pages[pageIndex]
-  // 本文は「コマ」単位の配列。1コマ = 画面に一度に表示する2〜3文程度のまとまり
+  // 本文は「コマ」単位の配列。1コマ = 1文
   const komas = currentPage?.text ?? []
   const komaCount = komas.length
   const isLastKoma = komaIndex >= komaCount - 1
@@ -166,105 +166,105 @@ function StoryViewer({ story, onFinish, onWordCollected }) {
 
   return (
     <div className="story-viewer">
-      <div className="story-viewer__image">
+      <div className="story-viewer__stage">
         {currentImage && !imageError ? (
-          <img src={currentImage} alt="" onError={() => setImageError(true)} />
+          <img className="story-viewer__stage-image" src={currentImage} alt="" onError={() => setImageError(true)} />
         ) : (
-          <div className="story-viewer__image-placeholder">画像準備中</div>
+          <div className="story-viewer__stage-image story-viewer__image-placeholder">画像準備中</div>
         )}
-      </div>
 
-      <div className="story-viewer__toggles">
-        <button
-          type="button"
-          className="story-viewer__toggle"
-          aria-pressed={showJa}
-          onClick={() => setShowJa((value) => !value)}
-        >
-          <EyeIcon />
-          <span className="story-viewer__toggle-label">日本語</span>
-        </button>
-        {hasThaiOnPage && (
-          <button
-            type="button"
-            className="story-viewer__toggle"
-            aria-pressed={showThai}
-            onClick={() => setShowThai((value) => !value)}
-          >
-            <EyeIcon />
-            <span className="story-viewer__toggle-label">タイ語</span>
-          </button>
-        )}
-      </div>
-
-      <div className="story-viewer__text">
-        {showJa && (
-          <div className="story-viewer__text-block story-viewer__text-block--ja">
-            <div className="story-viewer__text-row">
-              <div className="story-viewer__text-content">
-                <p>{renderAnnotatedText(currentText, annotationsById, handleWordTap)}</p>
-              </div>
-              {currentPage.audioJa && (
-                <div className="story-viewer__audio">
-                  <button
-                    type="button"
-                    className={`story-viewer__audio-button${jaAudio.hasError ? ' story-viewer__audio-button--error' : ''}`}
-                    onClick={jaAudio.toggle}
-                  >
-                    {jaAudio.isPlaying ? '⏹ 停止' : '▶ 再生'}
-                  </button>
-                  <audio
-                    ref={jaAudio.audioRef}
-                    src={currentPage.audioJa}
-                    preload="none"
-                    onEnded={jaAudio.handleEnded}
-                    onError={jaAudio.handleError}
-                  />
-                </div>
-              )}
-            </div>
+        <div className="story-viewer__overlay-bar">
+          <div className="story-viewer__toggles">
+            <button
+              type="button"
+              className="story-viewer__toggle"
+              aria-pressed={showJa}
+              onClick={() => setShowJa((value) => !value)}
+            >
+              <EyeIcon />
+              <span className="story-viewer__toggle-label">日本語</span>
+            </button>
+            {hasThaiOnPage && (
+              <button
+                type="button"
+                className="story-viewer__toggle"
+                aria-pressed={showThai}
+                onClick={() => setShowThai((value) => !value)}
+              >
+                <EyeIcon />
+                <span className="story-viewer__toggle-label">タイ語</span>
+              </button>
+            )}
           </div>
-        )}
 
-        {showThai && hasThaiOnPage && (
-          <div className="story-viewer__text-block story-viewer__text-block--thai">
-            <div className="story-viewer__text-row">
-              <div className="story-viewer__text-content">
-                <p>{renderAnnotatedText(currentThai, annotationsById, handleWordTap)}</p>
-                {currentThaiReading && <p className="story-viewer__reading">{currentThaiReading}</p>}
-              </div>
-              {currentPage.audioThai && (
-                <div className="story-viewer__audio">
-                  <button
-                    type="button"
-                    className={`story-viewer__audio-button${thaiAudio.hasError ? ' story-viewer__audio-button--error' : ''}`}
-                    onClick={thaiAudio.toggle}
-                  >
-                    {thaiAudio.isPlaying ? '⏹ 停止' : '▶ 再生'}
-                  </button>
-                  <audio
-                    ref={thaiAudio.audioRef}
-                    src={currentPage.audioThai}
-                    preload="none"
-                    onEnded={thaiAudio.handleEnded}
-                    onError={thaiAudio.handleError}
-                  />
+          <div className="story-viewer__text">
+            {showJa && (
+              <div className="story-viewer__text-block story-viewer__text-block--ja">
+                <div className="story-viewer__text-row">
+                  <div className="story-viewer__text-content">
+                    <p>{renderAnnotatedText(currentText, annotationsById, handleWordTap)}</p>
+                  </div>
+                  {currentPage.audioJa && (
+                    <div className="story-viewer__audio">
+                      <button
+                        type="button"
+                        className={`story-viewer__audio-button${jaAudio.hasError ? ' story-viewer__audio-button--error' : ''}`}
+                        onClick={jaAudio.toggle}
+                      >
+                        {jaAudio.isPlaying ? '⏹ 停止' : '▶ 再生'}
+                      </button>
+                      <audio
+                        ref={jaAudio.audioRef}
+                        src={currentPage.audioJa}
+                        preload="none"
+                        onEnded={jaAudio.handleEnded}
+                        onError={jaAudio.handleError}
+                      />
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
+              </div>
+            )}
+
+            {showThai && hasThaiOnPage && (
+              <div className="story-viewer__text-block story-viewer__text-block--thai">
+                <div className="story-viewer__text-row">
+                  <div className="story-viewer__text-content">
+                    <p>{renderAnnotatedText(currentThai, annotationsById, handleWordTap)}</p>
+                    {currentThaiReading && <p className="story-viewer__reading">{currentThaiReading}</p>}
+                  </div>
+                  {currentPage.audioThai && (
+                    <div className="story-viewer__audio">
+                      <button
+                        type="button"
+                        className={`story-viewer__audio-button${thaiAudio.hasError ? ' story-viewer__audio-button--error' : ''}`}
+                        onClick={thaiAudio.toggle}
+                      >
+                        {thaiAudio.isPlaying ? '⏹ 停止' : '▶ 再生'}
+                      </button>
+                      <audio
+                        ref={thaiAudio.audioRef}
+                        src={currentPage.audioThai}
+                        preload="none"
+                        onEnded={thaiAudio.handleEnded}
+                        onError={thaiAudio.handleError}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
 
       <div className="story-viewer__nav">
         <button type="button" onClick={handlePrev} disabled={isFirstKoma}>
           ← 前へ
         </button>
-        <div className="story-viewer__page-count">
-          <span className="story-viewer__page-count-main">
-            {komaIndex + 1} / {komaCount}
-          </span>
-        </div>
+        <span className="story-viewer__page-count">
+          {komaIndex + 1} / {komaCount}
+        </span>
         <button type="button" onClick={handleNext}>
           {isLastPage && isLastKoma ? '読み終わる' : '次へ →'}
         </button>
