@@ -29,7 +29,14 @@ export function ClosingScene() {
       <AmbientBackground />
       <SfxCue frame={0} name="completeFanfare" volume={0.65} />
       <LightSweep progress={sweepProgress} />
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24 }}>
+      {/*
+        position:absolute な AmbientBackground/LightSweep は、transform等を持たない
+        通常フローのコンテンツより手前(paint順で後)に描画されるCSSのスタッキングルールがある
+        （position:absoluteの要素は、たとえDOM順で先でも、z-index:auto同士のグループとして
+        通常フローの子要素より後に描画される）。position+zIndexで明示的にスタッキングコンテキストを
+        作り、この見出し/バッジを背景より確実に手前に出す。
+      */}
+      <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24 }}>
         <CompleteBadge scale={badgeScale} opacity={badgeOpacity} />
         <p
           style={{
