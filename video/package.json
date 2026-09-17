@@ -1,0 +1,23 @@
+{
+  "name": "taleglot-promo-video",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "remotion studio src/index.ts",
+    "render": "remotion render src/index.ts TaleglotPromo out/taleglot-promo.mp4",
+    "sfx": "node scripts/generate-sfx.mjs",
+    "narration": "node scripts/generate-narration.mjs"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "^4.0.525",
+    "@remotion/cli": "^4.0.525"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "typescript": "^5.6.3"
+  }
+}
