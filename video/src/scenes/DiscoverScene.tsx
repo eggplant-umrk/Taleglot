@@ -1,5 +1,5 @@
 import React from 'react'
-import { AbsoluteFill, Easing, interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion'
+import { AbsoluteFill, Audio, Easing, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from 'remotion'
 import { AmbientBackground } from '../ui/AmbientBackground'
 import { AppCard } from '../ui/AppCard'
 import { StoryStage } from '../ui/StoryStage'
@@ -103,6 +103,7 @@ export function DiscoverScene() {
 
   return (
     <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center' }}>
+      <Audio src={staticFile('audio/narration/scene03.wav')} />
       <AmbientBackground />
       <SfxCue frame={TAP_A} name="tap" volume={0.7} />
       <SfxCue frame={TAP_A + 18} name="cardPop" volume={0.6} />

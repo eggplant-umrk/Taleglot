@@ -1,5 +1,5 @@
 import React from 'react'
-import { AbsoluteFill, Easing, interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion'
+import { AbsoluteFill, Audio, Easing, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from 'remotion'
 import { AmbientBackground } from '../ui/AmbientBackground'
 import { AppCard } from '../ui/AppCard'
 import { CollectionGrid } from '../ui/CollectionGrid'
@@ -55,6 +55,7 @@ export function CollectScene() {
 
   return (
     <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center' }}>
+      <Audio src={staticFile('audio/narration/scene04.wav')} />
       <AmbientBackground />
       <SfxCue frame={ARRIVAL} name="collectChime" volume={0.7} />
       <AppCard width={1250} scale={containerScale} style={{ opacity: containerOpacity }}>

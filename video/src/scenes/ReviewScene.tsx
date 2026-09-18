@@ -1,5 +1,5 @@
 import React from 'react'
-import { AbsoluteFill, Easing, interpolate, useCurrentFrame, useVideoConfig } from 'remotion'
+import { AbsoluteFill, Audio, Easing, interpolate, staticFile, useCurrentFrame, useVideoConfig } from 'remotion'
 import { AmbientBackground } from '../ui/AmbientBackground'
 import { AppCard } from '../ui/AppCard'
 import { FlashCard } from '../ui/FlashCard'
@@ -60,6 +60,7 @@ export function ReviewScene() {
 
   return (
     <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center' }}>
+      <Audio src={staticFile('audio/narration/scene05.wav')} />
       <AmbientBackground />
       <SfxCue frame={CARD1_TAP} name="flip" volume={0.6} />
       <SfxCue frame={CARD2_TAP} name="flip" volume={0.6} />

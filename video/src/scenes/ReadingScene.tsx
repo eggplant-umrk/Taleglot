@@ -1,5 +1,5 @@
 import React from 'react'
-import { AbsoluteFill, Easing, interpolate, useCurrentFrame, useVideoConfig } from 'remotion'
+import { AbsoluteFill, Audio, Easing, interpolate, staticFile, useCurrentFrame, useVideoConfig } from 'remotion'
 import { AmbientBackground } from '../ui/AmbientBackground'
 import { AppCard } from '../ui/AppCard'
 import { HomeScreen } from '../ui/HomeScreen'
@@ -109,6 +109,7 @@ export function ReadingScene() {
 
   return (
     <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center' }}>
+      <Audio src={staticFile('audio/narration/scene02.wav')} />
       <AmbientBackground />
       <SfxCue frame={15} name="tap" volume={0.7} />
       <SfxCue frame={TRANSITION_1_TAP} name="whoosh" volume={0.5} />

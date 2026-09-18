@@ -1,5 +1,5 @@
 import React from 'react'
-import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig } from 'remotion'
+import { AbsoluteFill, Audio, interpolate, staticFile, useCurrentFrame, useVideoConfig } from 'remotion'
 import { AmbientBackground } from '../ui/AmbientBackground'
 import { CompleteBadge } from '../ui/CompleteBadge'
 import { LightSweep } from '../ui/LightSweep'
@@ -30,6 +30,7 @@ export function ClosingScene() {
 
   return (
     <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center', opacity: fadeOut }}>
+      <Audio src={staticFile('audio/narration/scene06.wav')} />
       <AmbientBackground />
       <SfxCue frame={0} name="completeFanfare" volume={0.65} />
       <LightSweep progress={sweepProgress} />

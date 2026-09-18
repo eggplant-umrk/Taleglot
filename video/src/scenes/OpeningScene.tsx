@@ -1,5 +1,5 @@
 import React from 'react'
-import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig, Easing } from 'remotion'
+import { AbsoluteFill, Audio, interpolate, staticFile, useCurrentFrame, useVideoConfig, Easing } from 'remotion'
 import { AmbientBackground } from '../ui/AmbientBackground'
 import { AppCard } from '../ui/AppCard'
 import { HomeScreen } from '../ui/HomeScreen'
@@ -33,6 +33,7 @@ export function OpeningScene() {
 
   return (
     <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center' }}>
+      <Audio src={staticFile('audio/narration/scene01.wav')} />
       <AmbientBackground />
       <AppCard scale={cardScale} style={{ opacity: cardOpacity, width: 1160 }}>
         <div style={{ textAlign: 'center', marginBottom: 28 }}>

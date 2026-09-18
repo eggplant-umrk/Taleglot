@@ -21,9 +21,11 @@ const SCRIPT_PATH = join(__dirname, '..', 'narration-script.md')
 
 function parseScript(markdown) {
   const scenes = []
+  // CRLF/LF どちらの改行でも読めるよう正規化してから走査する
+  const normalized = markdown.replace(/\r\n/g, '\n')
   const sceneRegex = /## (scene\d+)[^\n]*\n\n```\n([\s\S]*?)\n```/g
   let match
-  while ((match = sceneRegex.exec(markdown)) !== null) {
+  while ((match = sceneRegex.exec(normalized)) !== null) {
     const [, id, rawText] = match
     // [表記|読み] -> 読み だけを残して、VOICEVOXに正しい読みを渡す
     const text = rawText
