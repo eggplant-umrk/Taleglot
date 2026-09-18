@@ -107,7 +107,6 @@ export function DiscoverScene() {
       <AmbientBackground />
       <SfxCue frame={TAP_A} name="tap" volume={0.7} />
       <SfxCue frame={TAP_A + 18} name="cardPop" volume={0.6} />
-      <SfxCue frame={SWIPE_START} name="whoosh" volume={0.45} />
       <SfxCue frame={TAP_B} name="tap" volume={0.7} />
       <SfxCue frame={TAP_B + 18} name="cardPop" volume={0.6} />
       <AppCard width={1450}>
