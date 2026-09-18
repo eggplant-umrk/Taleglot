@@ -112,8 +112,6 @@ export function ReadingScene() {
       <Audio src={staticFile('audio/narration/scene02.wav')} />
       <AmbientBackground />
       <SfxCue frame={15} name="tap" volume={0.7} />
-      <SfxCue frame={TRANSITION_1_TAP} name="whoosh" volume={0.5} />
-      <SfxCue frame={TRANSITION_2_TAP} name="whoosh" volume={0.5} />
 
       {showHome && (
         <div
